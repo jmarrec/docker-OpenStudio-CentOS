@@ -310,15 +310,15 @@ echo ""
 # If the docker image doesn't already exists
 if [ -z $(docker images -q $os_image_name) ]; then
   echo -e "* Building the $os_image_str from Dockerfile"
-  echo "Command: docker build $platform_flag -t $os_image_name --no-cache ."
-  docker build $platform_flag -t $os_image_name --no-cache .
+  echo "Command: docker build $platform_flag -t $os_image_name ."
+  docker build $platform_flag -t $os_image_name .
 else
   if [ "$force_rebuild" = true ];
   then
     echo -e "* Rebuilding the image $os_image_str from Dockerfile"
     docker rmi $os_image_name > $OUT
-    echo "Command: docker build $platform_flag -t $os_image_name --no-cache ."
-    docker build $platform_flag -t $os_image_name --no-cache .
+    echo "Command: docker build $platform_flag -t $os_image_name ."
+    docker build $platform_flag -t $os_image_name .
   fi
   echo
 fi
