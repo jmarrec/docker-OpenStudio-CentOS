@@ -3,14 +3,15 @@ FROM centos:centos7
 #RUN useradd -m oscentos
 #USER oscentos
 
-ENV PATH="/root/Qt/Tools/QtInstallerFramework/4.3/bin:/opt/gcc-10.2.1/usr/bin:${PATH}" C="/opt/gcc-10.2.1/usr/bin/gcc" CXX="/opt/gcc-10.2.1/usr/bin/g++"
+ENV PATH="/root/Qt/Tools/QtInstallerFramework/4.3/bin:${PATH}" CC="/opt/rh/devtoolset-10/root/usr/bin/gcc" CXX="/opt/rh/devtoolset-10/root/usr/bin/g++"
 
 # Chained into a single run statement to mimize the number of image layers
 # The perl-Data-Dumper / perl-Thread-Queue are so you can build swig correctly
 RUN yum -y update &&\
-    yum --nogpg install -y https://mirror.ghettoforge.org/distributions/gf/gf-release-latest.gf.el7.noarch.rpm &&\
-    yum install -y epel-release &&\
-    yum install -y gcc10-gcc-c++ python3 patch git make wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue &&\
+    yum install -y centos-release-scl epel-release && yum install -y devtoolset-10-gcc* &&\
+    echo "source scl_source enable devtoolset-10" >> ~/.bashrc &&\
+    source scl_source enable devtoolset-10 &&\
+    yum install -y python3 patch git make wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue &&\
     pip3 install conan cmake ninja &&\
     conan profile new --detect default &&\
     conan profile update settings.compiler.libcxx=libstdc++ default &&\
@@ -26,9 +27,7 @@ RUN yum -y update &&\
     echo 'COLOR_0="0:37m" # Light Gray' >> ~/.bashrc &&\
     echo 'COLOR_1="38;5;167m" # Some light red' >> ~/.bashrc &&\
     echo 'COLOR_2="38;5;33m" # Some light blue' >> ~/.bashrc &&\
-    echo 'PS1="\[\033[$COLOR_0\](${OSVERSION})\[\033[$COLOR_1\]\u\[\033[0m\]@\[\033[$COLOR_2\]\W\[\033[0m\]$ "' >> ~/.bashrc &&\
-    echo 'export long_os_version=$(openstudio openstudio_version)' >> ~/.bashrc &&\
-    echo 'export short_os_version=${long_os_version%.*}' >> ~/.bashrc  &&\
+    echo 'PS1="\[\033[$COLOR_0\]\[\033[$COLOR_1\]\u\[\033[0m\]@\[\033[$COLOR_2\]\W\[\033[0m\]$ "' >> ~/.bashrc &&\
     echo 'Cloning the OpenStudio.git CentOS branch' &&\
     cd ~ && git clone --single-branch --branch CentOS https://github.com/NREL/OpenStudio.git && mkdir OS-build-release
 
@@ -36,8 +35,6 @@ RUN yum -y update &&\
 #    curl -sSL https://get.rvm.io | bash -s stable &&\
 #    rvm install 2.7.2 -- --enable-static &&\
 #    rvm --default use 2.7.2 &&\
-# yum install -y centos-release-scl devtoolset-10-gcc*
-# scl enable devtoolset-10 bash
 
 
 WORKDIR /root
