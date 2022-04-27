@@ -31,7 +31,7 @@ RUN yum -y update &&\
     echo 'PS1="\[\033[$COLOR_0\]\[\033[$COLOR_1\]\u\[\033[0m\]@\[\033[$COLOR_2\]\W\[\033[0m\]$ "' >> ~/.bashrc &&\
     yum install -y rh-ruby27 &&\
     echo "source scl_source enable rh-ruby27" >> /etc/bashrc &&\
-    source scl_source enable rh-ruby27 &&\
+    source scl_source enable rh-ruby27
 #    echo "Installing Ruby 2.7.2 via RVM" &&\
 #    gpg2 --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BD &&\
 #    curl -sSL https://rvm.io/mpapis.asc | gpg2 --import &&\
