@@ -4,6 +4,11 @@ set -e -x
 
 cd OS-build-release
 
+# This isn't needed if you pass --login to bash or if you are already attached to the container
+# source scl_source enable devtoolset-10
+
+gcc --version
+g++ --version
 cmake -G Ninja  -DCMAKE_BUILD_TYPE:STRING=Release \
        -DBUILD_TESTING:BOOL=ON -DBUILD_PACKAGE:BOOL=ON -DCPACK_BINARY_TGZ:BOOL=ON -DCPACK_BINARY_RPM:BOOL=OFF \
       -DCPACK_BINARY_IFW:BOOL=OFF -DCPACK_BINARY_NSIS:BOOL=OFF  -DCPACK_BINARY_DEB:BOOL=OFF -DCPACK_BINARY_STGZ:BOOL=OFF \

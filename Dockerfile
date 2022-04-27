@@ -9,9 +9,9 @@ ENV PATH="/root/Qt/Tools/QtInstallerFramework/4.3/bin:${PATH}" CC="/opt/rh/devto
 # The perl-Data-Dumper / perl-Thread-Queue are so you can build swig correctly
 RUN yum -y update &&\
     yum install -y centos-release-scl epel-release && yum install -y devtoolset-10-gcc* &&\
-    echo "source scl_source enable devtoolset-10" >> ~/.bashrc &&\
+    echo "source scl_source enable devtoolset-10" >> /etc/bashrc &&\
     source scl_source enable devtoolset-10 &&\
-    yum install -y python3 patch git make wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue &&\
+    yum install -y python3 patch git make wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build &&\
     pip3 install conan cmake ninja &&\
     conan profile new --detect default &&\
     conan profile update settings.compiler.libcxx=libstdc++ default &&\

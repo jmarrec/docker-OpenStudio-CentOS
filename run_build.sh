@@ -346,7 +346,7 @@ echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Nn]$ ]]; then
   echo -e "\nRunning docker_container_script.sh:"
   echo "------------------------------------"
-  docker exec $os_container_name /bin/bash ./docker_container_script.sh
+  docker exec $os_container_name /bin/bash --login ./docker_container_script.sh
 fi
 
 
