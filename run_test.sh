@@ -141,6 +141,7 @@ echo -e "* Launching the $os_container_str"
 echo "docker run --name $os_container_name -v `pwd`/dropbox:/root/dropbox -it --rm -d $base_os_image_name /bin/bash"
 docker run --name $os_container_name -v `pwd`/dropbox:/root/dropbox -it --rm -d $base_os_image_name /bin/bash > $OUT
 
+echo "${Cyan}yum localinstall -y OpenStudio-3.4.0-*.rpm${Color_Off}"
 docker exec $os_container_name /bin/bash -c "cd /root/dropbox && yum localinstall -y OpenStudio-3.4.0-*.rpm"
 
 echo -e "${BGreen}Install worked${Color_Off}"
@@ -150,16 +151,21 @@ echo "${Cyan}Checking installed openstudio --version${Color_Off}"
 docker exec $os_container_name /bin/bash -c "openstudio --version"
 echo ""
 
-echo -e "${BPurple}Trying to run a simulation${Color_Off}"
-echo -e "openstudio run -w /usr/Examples/compact_osw/compact.osw"
+echo "${Cyan}Get Install prefix:${Color_Off}"
+install_root=$(docker exec $os_container_name /bin/bash -c "openstudio -e 'puts OpenStudio::getOpenStudioCLI.parent_path.parent_path.to_s'")
+echo -e "install_root=${BGreen}$install_root${Color_Off}"
 echo ""
-docker exec $os_container_name /bin/bash -c "openstudio run -w /usr/Examples/compact_osw/compact.osw"
+
+
+echo -e "${BPurple}Trying to run a simulation${Color_Off}"
+echo -e "openstudio run -w $install_root/Examples/compact_osw/compact.osw"
+echo ""
+docker exec $os_container_name /bin/bash -c "openstudio run -w $install_root/Examples/compact_osw/compact.osw"
 echo ""
 echo -e "${Cyan}eplusout.err:${Color_Off}"
-docker exec $os_container_name /bin/bash -c "head -n2 /usr/Examples/compact_osw/run/eplusout.err"
+docker exec $os_container_name /bin/bash -c "head -n2 $install_root/Examples/compact_osw/run/eplusout.err"
 echo -e "${Cyan}     [  ... truncated ... ]${Color_Off}"
-docker exec $os_container_name /bin/bash -c "tail -n3 /usr/Examples/compact_osw/run/eplusout.err"
+docker exec $os_container_name /bin/bash -c "tail -n3 $install_root/Examples/compact_osw/run/eplusout.err"
 
 # Run cleanup when normal execution
 cleanup 0
-
