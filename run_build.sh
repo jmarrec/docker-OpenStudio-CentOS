@@ -65,7 +65,7 @@ fi
 
 if [ "$ask_user" = true ]; then
 
-  echo -e -n "Do you want to force rebuild for the ${BRed}openstudio-build/centos${Color_Off} images? [y/${URed}N${Color_Off}] "
+  echo -e -n "Do you want to force rebuild for the $os_image_str? [y/${URed}N${Color_Off}] "
   read -n 1 -r
   echo    # (optional) move to a new line
   # Default is No
@@ -73,7 +73,7 @@ if [ "$ask_user" = true ]; then
     force_rebuild=true
   fi
 
-  echo -e -n "Do you want to delete the ${BRed}openstudio-build/centos${Color_Off} images after use? [y/${URed}N${Color_Off}] "
+  echo -e -n "Do you want to delete the $os_image_str after use? [y/${URed}N${Color_Off}] "
   read -n 1 -r
   echo    # (optional) move to a new line
   # Default is No
@@ -266,19 +266,19 @@ function cleanup() {
   # If the openstudio container is still running, stop it? Defaults to Yes
   stop_running_container "$os_container_name" "$os_container_str" Y
 
-  # Note: We shouldn't get in there for the my_openstudio container really,
-  # because I used --rm when 'run' so if you stop -> it's gone
+  # Note: It's possible we don't get in there for the container really,
+  # because I may have used --rm when 'run' so if you stop -> it's gone
   delete_stopped_container "$os_container_name" "$os_container_str"
 
   # Cleanup custom/openstudio image?
   delete_image "$os_image_name" "$os_image_str" "$os_container_name" N
 
-  #if [[ "$(uname)" != MINGW* ]]; then
-  #  echo
-  #  echo -e "${On_Blue}Fixing ownership: setting it to user=$USER and chmod=664 (requires sudo)${Color_Off}"
-  #  sudo chown -R $USER *
-  #  sudo find ./dropbox/ -type f -exec chmod 664 {} \;
-  #fi
+  if [[ "$(uname)" != MINGW* ]]; then
+    echo
+    echo -e "${On_Blue}Fixing ownership: setting it to user=$USER:$USER and chmod=664 (requires sudo)${Color_Off}"
+    sudo chown -R $USER:$USER *
+    sudo find ./dropbox/ -type f -exec chmod 664 {} \;
+  fi
 
   exit $1
 
@@ -331,8 +331,8 @@ if [ "$(docker ps -aq -f name=$os_container_name)" ]; then
 fi
 
 echo -e "* Launching the $os_container_str"
-echo "Command: docker run --name $os_container_name --cpus="$n_cores" $platform_flag -v `pwd`/dropbox:/root/dropbox -d -it --rm $os_image_name /bin/bash > $OUT"
-docker run --name $os_container_name --cpus="$n_cores" $platform_flag -v `pwd`/dropbox:/root/dropbox -d -it --rm $os_image_name /bin/bash > $OUT
+echo "Command: docker run --name $os_container_name --cpus="$n_cores" $platform_flag -v `pwd`/dropbox:/root/dropbox -d -it $os_image_name /bin/bash > $OUT"
+docker run --name $os_container_name --cpus="$n_cores" $platform_flag -v `pwd`/dropbox:/root/dropbox -d -it $os_image_name /bin/bash > $OUT
 
 # Chmod execute the script
 docker exec $os_container_name chmod +x docker_container_script.sh
