@@ -2,4 +2,4 @@
 *
 # Then uncommment what's stricly needed
 # !model/
-!docker_container_script.sh
+# !docker_container_script.sh

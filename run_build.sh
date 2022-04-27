@@ -334,6 +334,8 @@ echo -e "* Launching the $os_container_str"
 echo "Command: docker run --name $os_container_name --cpus="$n_cores" $platform_flag -v `pwd`/dropbox:/root/dropbox -d -it $os_image_name /bin/bash > $OUT"
 docker run --name $os_container_name --cpus="$n_cores" $platform_flag -v `pwd`/dropbox:/root/dropbox -d -it $os_image_name /bin/bash > $OUT
 
+# cp the script
+docker cp docker_container_script.sh $os_container_name:.
 # Chmod execute the script
 docker exec $os_container_name chmod +x docker_container_script.sh
 

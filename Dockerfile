@@ -43,4 +43,4 @@ WORKDIR /root
 
 # Given that I have used a .dockerignore file, I don't need to specify which files to add, I can add the entire current directory
 # And given that I have already set the WORKDIR, I can use relative path
-ADD . .
+# ADD . .
