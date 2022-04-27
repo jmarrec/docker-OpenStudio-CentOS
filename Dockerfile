@@ -11,12 +11,11 @@ RUN yum -y update &&\
     yum install -y centos-release-scl epel-release && yum install -y devtoolset-10-gcc* &&\
     echo "source scl_source enable devtoolset-10" >> /etc/bashrc &&\
     source scl_source enable devtoolset-10 &&\
-    yum install -y python3 patch git make wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build &&\
+    yum install -y python3 patch git make which wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build &&\
     pip3 install conan cmake ninja &&\
     conan profile new --detect default &&\
     conan profile update settings.compiler.libcxx=libstdc++ default &&\
     conan config set general.revisions_enabled=True && conan config set general.parallel_download=8 &&\
-    echo "TODO: NOT Installing Ruby 2.7.2 via RVM" &&\
     echo "Installing QtIFW" &&\
     mkdir ~/Qt && cd ~/Qt &&\
     yum install -y xcb-util-wm xcb-util-image xcb-util-keysyms xcb-util-renderutil libxkbcommon-x11 fontconfig libX11 libXext libGL &&\
@@ -30,13 +29,15 @@ RUN yum -y update &&\
     echo 'COLOR_1="38;5;167m" # Some light red' >> ~/.bashrc &&\
     echo 'COLOR_2="38;5;33m" # Some light blue' >> ~/.bashrc &&\
     echo 'PS1="\[\033[$COLOR_0\]\[\033[$COLOR_1\]\u\[\033[0m\]@\[\033[$COLOR_2\]\W\[\033[0m\]$ "' >> ~/.bashrc &&\
-    echo 'Cloning the OpenStudio.git CentOS branch' &&\
-    cd ~ && git clone --single-branch --branch CentOS https://github.com/NREL/OpenStudio.git && mkdir OS-build-release
-
-#    gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BD &&\
-#    curl -sSL https://get.rvm.io | bash -s stable &&\
-#    rvm install 2.7.2 -- --enable-static &&\
-#    rvm --default use 2.7.2 &&\
+    echo "Installing Ruby 2.7.2 via RVM" &&\
+    gpg2 --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BD &&\
+    curl -sSL https://rvm.io/mpapis.asc | gpg2 --import &&\
+    curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import - &&\
+    curl -sSL https://get.rvm.io | bash -s stable &&\
+    sudo usermod -a -G rvm $USER &&\
+    source /etc/profile.d/rvm.sh &&\
+    rvm install 2.7.2 -- --enable-static &&\
+    rvm --default use 2.7.2
 
 
 WORKDIR /root
