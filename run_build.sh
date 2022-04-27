@@ -3,7 +3,7 @@
 # This script will run regression tests for many earlier OpenStudio versions
 # For a single & more interactive version use the CLI ./launch_docker.sh
 
-# AUTHOR: Julien Marrec, julien@effibem.com, 2018
+# AUTHOR: Julien Marrec, julien@effibem.com, 2022
 
 # Source the file that has the colors
 source colors.sh
@@ -41,7 +41,7 @@ centos_version=centos7    # Not planning to try and do a Dockerfile.in yet, so h
 # sed -e "s/\${centos_version}/$centos_version/" Dockerfile.in > Dockerfile
 os_container_name=os-centos
 os_image_name=openstudio-build/centos:$centos_version
-base_os_image_name=centos/centos:$centos_version
+base_os_image_name=centos:$centos_version
 
 # String representation with colors
 os_container_str="${BBlue}container${Color_Off} ${UBlue}$os_container_name${Color_Off}"
@@ -373,3 +373,5 @@ cleanup 0
 
 # Test one
 # docker run --name os-centos-test -it --rm --platform linux/amd64 -v "$(pwd)":/home/OS-Centos centos:centos7 /bin/bash
+# docker run --name test-os-centos -v `pwd`/dropbox:/root/dropbox -it --rm centos:centos7 /bin/bash
+# $ cd /root/dropdox && yum localinstall OpenStudio-3.4.0-alpha+4d3affeaa9-CentOS-7.9.2009.rpm
