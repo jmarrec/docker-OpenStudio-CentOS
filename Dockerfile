@@ -21,6 +21,7 @@ RUN yum -y update &&\
     mkdir ~/Qt && cd ~/Qt &&\
     yum install -y xcb-util-wm xcb-util-image xcb-util-keysyms xcb-util-renderutil libxkbcommon-x11 fontconfig libX11 libXext libGL &&\
     wget --no-check-certificate https://download.qt.io/official_releases/qt-installer-framework/4.3.0/QtInstallerFramework-linux-x64-4.3.0.run &&\
+    wget --no-check-certificate https://raw.githubusercontent.com/openstudiocoalition/OpenStudioApplication/develop/ci/install_script_qtifw.qs &&\
     chmod +x QtInstallerFramework-linux-x64-4.3.0.run &&\
     ./QtInstallerFramework-linux-x64-4.3.0.run --verbose --platform minimal --script install_script_qtifw.qs &&\
     echo '' >> ~/.bashrc &&\
