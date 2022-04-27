@@ -3,7 +3,7 @@ FROM centos:centos7
 #RUN useradd -m oscentos
 #USER oscentos
 
-ENV PATH="/root/Qt/Tools/QtInstallerFramework/4.3/bin:${PATH}" CC="/opt/rh/devtoolset-10/root/usr/bin/gcc" CXX="/opt/rh/devtoolset-10/root/usr/bin/g++"
+ENV PATH="/root/Qt/QtIFW-4.3.0/bin/:${PATH}" CC="/opt/rh/devtoolset-10/root/usr/bin/gcc" CXX="/opt/rh/devtoolset-10/root/usr/bin/g++"
 
 # Chained into a single run statement to mimize the number of image layers
 # The perl-Data-Dumper / perl-Thread-Queue are so you can build swig correctly
@@ -19,9 +19,10 @@ RUN yum -y update &&\
     echo "TODO: NOT Installing Ruby 2.7.2 via RVM" &&\
     echo "Installing QtIFW" &&\
     mkdir ~/Qt && cd ~/Qt &&\
-    yum install -y p7zip xcb-util-wm xcb-util-image xcb-util-keysyms xcb-util-renderutil libxkbcommon-x11 fontconfig libX11 libXext libGL &&\
-    wget https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/tools_ifw/qt.tools.ifw.43/4.3.0-0-202202240617ifw-linux-x64.7z --no-check-certificate &&\
-    7za x 4.3.0-0-202202240617ifw-linux-x64.7z &&\
+    yum install -y xcb-util-wm xcb-util-image xcb-util-keysyms xcb-util-renderutil libxkbcommon-x11 fontconfig libX11 libXext libGL &&\
+    wget --no-check-certificate https://download.qt.io/official_releases/qt-installer-framework/4.3.0/QtInstallerFramework-linux-x64-4.3.0.run &&\
+    chmod +x QtInstallerFramework-linux-x64-4.3.0.run &&\
+    ./QtInstallerFramework-linux-x64-4.3.0.run --verbose --platform minimal --script install_script_qtifw.qs &&\
     echo '' >> ~/.bashrc &&\
     echo '# Setting the PS1 Prompt' >> ~/.bashrc &&\
     echo 'COLOR_0="0:37m" # Light Gray' >> ~/.bashrc &&\
