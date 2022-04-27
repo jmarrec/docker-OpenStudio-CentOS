@@ -30,6 +30,7 @@ jobs:
       uses: docker/metadata-action@v3
       with:
         images: jmarrec/openstudio-build-centos
+        tags: ${{ env.centos_version }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
