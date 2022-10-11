@@ -3,7 +3,7 @@ FROM centos:centos7
 #RUN useradd -m oscentos
 #USER oscentos
 
-ENV PATH="/root/Qt/QtIFW-4.3.0/bin/:${PATH}" CC="/opt/rh/devtoolset-10/root/usr/bin/gcc" CXX="/opt/rh/devtoolset-10/root/usr/bin/g++"
+ENV PATH="/root/Qt/QtIFW-4.4.2/bin/:${PATH}" CC="/opt/rh/devtoolset-10/root/usr/bin/gcc" CXX="/opt/rh/devtoolset-10/root/usr/bin/g++"
 
 # Chained into a single run statement to mimize the number of image layers
 # The perl-Data-Dumper / perl-Thread-Queue are so you can build swig correctly
@@ -11,7 +11,9 @@ RUN yum -y update &&\
     yum install -y centos-release-scl epel-release && yum install -y devtoolset-10-gcc* &&\
     echo "source scl_source enable devtoolset-10" >> /etc/bashrc &&\
     source scl_source enable devtoolset-10 &&\
-    yum install -y python3 patch git make which wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build &&\
+    yum install -y rh-python38 rh-python38-python-devel patch git make which wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build &&\
+    echo "source scl_source enable rh-python38 " >> /etc/bashrc &&\
+    source scl_source enable rh-python38 &&\
     pip3 install conan cmake ninja &&\
     conan profile new --detect default &&\
     conan profile update settings.compiler.libcxx=libstdc++ default &&\
@@ -19,10 +21,10 @@ RUN yum -y update &&\
     echo "Installing QtIFW" &&\
     mkdir ~/Qt && cd ~/Qt &&\
     yum install -y xcb-util-wm xcb-util-image xcb-util-keysyms xcb-util-renderutil libxkbcommon-x11 fontconfig libX11 libXext libGL &&\
-    wget --no-check-certificate https://download.qt.io/official_releases/qt-installer-framework/4.3.0/QtInstallerFramework-linux-x64-4.3.0.run &&\
+    wget --no-check-certificate https://download.qt.io/official_releases/qt-installer-framework/4.4.2/QtInstallerFramework-linux-x64-4.4.2.run &&\
     wget --no-check-certificate https://raw.githubusercontent.com/openstudiocoalition/OpenStudioApplication/develop/ci/install_script_qtifw.qs &&\
-    chmod +x QtInstallerFramework-linux-x64-4.3.0.run &&\
-    ./QtInstallerFramework-linux-x64-4.3.0.run --verbose --platform minimal --script install_script_qtifw.qs &&\
+    chmod +x QtInstallerFramework-linux-x64-4.4.2.run &&\
+    ./QtInstallerFramework-linux-x64-4.4.2.run --verbose --platform minimal --script install_script_qtifw.qs &&\
     echo '' >> ~/.bashrc &&\
     echo '# Setting the PS1 Prompt' >> ~/.bashrc &&\
     echo 'COLOR_0="0:37m" # Light Gray' >> ~/.bashrc &&\
