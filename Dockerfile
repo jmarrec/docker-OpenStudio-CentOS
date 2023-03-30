@@ -16,7 +16,7 @@ RUN yum -y update &&\
                 libXrandr libXrandr-devel libXinerama-devel libXcursor-devel &&\
     echo "source scl_source enable rh-python38 " >> /etc/bashrc &&\
     source scl_source enable rh-python38 &&\
-    pip3 install conan cmake ninja &&\
+    pip3 install conan==1.59.0 cmake ninja &&\
     conan profile new --detect default &&\
     conan profile update settings.compiler.libcxx=libstdc++ default &&\
     conan config set general.revisions_enabled=True && conan config set general.parallel_download=8 &&\
