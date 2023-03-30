@@ -11,7 +11,9 @@ RUN yum -y update &&\
     yum install -y centos-release-scl epel-release && yum install -y devtoolset-10-gcc* &&\
     echo "source scl_source enable devtoolset-10" >> /etc/bashrc &&\
     source scl_source enable devtoolset-10 &&\
-    yum install --nogpgcheck -y rh-python38 rh-python38-python-devel patch git make which wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build libgomp libX11 &&\
+    yum install --nogpgcheck -y rh-python38 rh-python38-python-devel patch git make which wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build libgomp libX11 \
+                mesa-libGLES.x86_64 mesa-libGL-devel.x86_64 mesa-libGLU-devel.x86_64 mesa-libGLw.x86_64 mesa-libGLw-devel.x86_64 libXi-devel.x86_64 freeglut-devel.x86_64 freeglut.x86_64 \
+                libXrandr libXrandr-devel libXinerama-devel libXcursor-devel &&\
     echo "source scl_source enable rh-python38 " >> /etc/bashrc &&\
     source scl_source enable rh-python38 &&\
     pip3 install conan cmake ninja &&\
