@@ -11,7 +11,7 @@ RUN yum -y update &&\
     yum install -y centos-release-scl epel-release && yum install -y devtoolset-10-gcc* &&\
     echo "source scl_source enable devtoolset-10" >> /etc/bashrc &&\
     source scl_source enable devtoolset-10 &&\
-    yum install -y rh-python38 rh-python38-python-devel patch git make which wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build &&\
+    yum install --nogpgcheck -y rh-python38 rh-python38-python-devel patch git make which wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build libgomp libX11 &&\
     echo "source scl_source enable rh-python38 " >> /etc/bashrc &&\
     source scl_source enable rh-python38 &&\
     pip3 install conan cmake ninja &&\
@@ -20,7 +20,7 @@ RUN yum -y update &&\
     conan config set general.revisions_enabled=True && conan config set general.parallel_download=8 &&\
     echo "Installing QtIFW" &&\
     mkdir ~/Qt && cd ~/Qt &&\
-    yum install -y xcb-util-wm xcb-util-image xcb-util-keysyms xcb-util-renderutil libxkbcommon-x11 fontconfig libX11 libXext libGL &&\
+    yum install -y xcb-util-wm xcb-util-image xcb-util-keysyms xcb-util-renderutil libxkbcommon-x11 fontconfig libXext libGL &&\
     wget --no-check-certificate https://download.qt.io/official_releases/qt-installer-framework/4.5.2/QtInstallerFramework-linux-x64-4.5.2.run &&\
     wget --no-check-certificate https://raw.githubusercontent.com/openstudiocoalition/OpenStudioApplication/develop/ci/install_script_qtifw.qs &&\
     chmod +x QtInstallerFramework-linux-x64-4.5.2.run &&\
