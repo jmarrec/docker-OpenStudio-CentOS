@@ -7,6 +7,14 @@ cd OS-build-release
 # This isn't needed if you pass --login to bash or if you are already attached to the container
 # source scl_source enable devtoolset-10
 
+# TODO: temp: I'm trying to avoid redownloading everything all the time
+#cp ../dropbox/EnergyPlus-22.1.0-ed759b17ee-Centos7-x86_64.tar.gz .
+#tar xfz EnergyPlus-22.1.0-ed759b17ee-Centos7-x86_64.tar.gz
+#cp ../dropbox/openstudio3-gems-20220404-linux.tar.gz .
+#tar xfz openstudio3-gems-20220404-linux.tar.gz
+#cp ../dropbox/radiance-5.0.a.12-Redhat.tar.gz .
+#tar xfz radiance-5.0.a.12-Redhat.tar.gz
+
 gcc --version
 g++ --version
 
@@ -18,9 +26,10 @@ CONAN_FIRST_TIME_BUILD_ALL=OFF
 echo "CONAN_FIRST_TIME_BUILD_ALL=$CONAN_FIRST_TIME_BUILD_ALL"
 
 cmake -G Ninja  -DCMAKE_BUILD_TYPE:STRING=Release \
-      -DBUILD_TESTING:BOOL=ON -DBUILD_PACKAGE:BOOL=ON -DCPACK_BINARY_TGZ:BOOL=ON -DCPACK_BINARY_RPM:BOOL=ON \
-      -DCPACK_BINARY_IFW:BOOL=OFF -DCPACK_BINARY_NSIS:BOOL=OFF  -DCPACK_BINARY_DEB:BOOL=OFF -DCPACK_BINARY_STGZ:BOOL=OFF \
-      -DCPACK_BINARY_TBZ2:BOOL=OFF -DCPACK_BINARY_TXZ:BOOL=OFF -DCPACK_BINARY_TZ:BOOL=OFF \
+      -DBUILD_TESTING:BOOL=ON -DCPACK_BINARY_TGZ:BOOL=ON -DCPACK_BINARY_RPM:BOOL=ON \
+      -DCPACK_BINARY_IFW:BOOL=OFF -DCPACK_BINARY_DEB:BOOL=OFF -DCPACK_BINARY_NSIS:BOOL=OFF \
+      -DCPACK_BINARY_STGZ:BOOL=OFF -DCPACK_BINARY_TBZ2:BOOL=OFF -DCPACK_BINARY_TXZ:BOOL=OFF -DCPACK_BINARY_TZ:BOOL=OFF \
+      -DBUILD_PYTHON_BINDINGS:BOOL=ON -DPYTHON_VERSION:STRING=3.8 \
       -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON \
       -DCMAKE_C_COMPILER:FILEPATH=$CC -DCMAKE_CXX_COMPILER:FILEPATH=$CXX \
       -DCONAN_FIRST_TIME_BUILD_ALL:BOOL=$CONAN_FIRST_TIME_BUILD_ALL -D_GLIBCXX_USE_CXX11_ABI=0 \
@@ -37,4 +46,4 @@ ninja package
 # Move that back to the dropbox
 cp OpenStudio-3* ../dropbox/
 # Get the openstudio.spec too
-cp _CPack_Packages/Linux/RPM/SPECS/openstudio.spec ../dropbox/
+cp _CPack_Packages/Linux/RPM/SPECS/openstudio*.spec ../dropbox/

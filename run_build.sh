@@ -14,7 +14,11 @@ source colors.sh
 
 # Do you want to ask the user to set these arguments?
 # If false, will just use the hardcoded ones
-ask_user=true
+if [ -z $1 ]; then
+  ask_user=true
+else
+  ask_user=$1
+fi
 
 # If image custom/openstudio:$os_version already exists, do you want to force rebuild?
 # Otherwise will use this one
@@ -332,7 +336,11 @@ fi
 
 echo -e "* Launching the $os_container_str"
 echo "Command: docker run --name $os_container_name --cpus="$n_cores" $platform_flag -v `pwd`/dropbox:/root/dropbox -d -it $os_image_name /bin/bash > $OUT"
-docker run --name $os_container_name --cpus="$n_cores" $platform_flag -v `pwd`/dropbox:/root/dropbox -d -it $os_image_name /bin/bash > $OUT
+docker run --name $os_container_name --cpus="$n_cores" $platform_flag \
+  -v `pwd`/dropbox:/root/dropbox \
+  -v /home/julien/Software/Others/OpenStudio:/root/OpenStudio \
+  -v /home/julien/Software/Others/EnergyPlus:/root/EnergyPlus \
+  -d -it $os_image_name /bin/bash > $OUT
 
 # cp the script
 docker cp docker_container_script.sh $os_container_name:.
