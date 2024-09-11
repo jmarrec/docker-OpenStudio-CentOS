@@ -12,8 +12,11 @@ RUN yum clean plugins && yum clean all && yum -y update &&\
     yum install -y centos-release-scl epel-release && yum install -y devtoolset-10-gcc* &&\
     echo "source scl_source enable devtoolset-10" >> /etc/bashrc &&\
     source scl_source enable devtoolset-10 &&\
-    yum install --nogpgcheck -y rh-python38 rh-python38-python-devel patch git make which wget redhat-lsb-core perl-Data-Dumper perl-Thread-Queue libicu libicu-devel readline-devel rpm-build libgomp libX11 \
-                mesa-libGLES.x86_64 mesa-libGL-devel.x86_64 mesa-libGLU-devel.x86_64 mesa-libGLw.x86_64 mesa-libGLw-devel.x86_64 libXi-devel.x86_64 freeglut-devel.x86_64 freeglut.x86_64 \
+    yum install --nogpgcheck -y rh-python38 rh-python38-python-devel patch git make which wget redhat-lsb-core \
+                perl-Data-Dumper perl-Thread-Queue perl-Digest-SHA1 perl-Digest-SHA perl-IPC-Cmd \
+                libicu libicu-devel readline-devel rpm-build libgomp libX11 \
+                mesa-libGLES.x86_64 mesa-libGL-devel.x86_64 mesa-libGLU-devel.x86_64 mesa-libGLw.x86_64 mesa-libGLw-devel.x86_64 \
+                libXi-devel.x86_64 freeglut-devel.x86_64 freeglut.x86_64 \
                 libXrandr libXrandr-devel libXinerama-devel libXcursor-devel glibc-static &&\
     echo "source scl_source enable rh-python38 " >> /etc/bashrc &&\
     source scl_source enable rh-python38 &&\
@@ -59,15 +62,13 @@ RUN yum install -y patch zlib-devel bzip2 bzip2-devel readline-devel sqlite sqli
 
 # Install ruby from rbenv
 ARG RUBY_VERSION=3.2.2
-RUN yum install -y patch bzip2 openssl-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tar libyaml-devel perl-IPC-Cmd \
+RUN yum install -y patch bzip2 openssl-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tar libyaml-devel \
     && curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash \
     && echo '[[ -s "$HOME/.rbenv/bin" ]] && eval "$($HOME/.rbenv/bin/rbenv init - bash)"' >> ~/.bashrc
 
 # Can't manage to run this from the dockerfile, but it works inside the container...
 #RUN RUBY_CONFIGURE_OPTS="--disable-shared" $HOME/.rbenv/bin/rbenv install ${RUBY_VERSION} || cat /tmp/ruby-build.*.log \
 #    && $HOME/.rbenv/bin/rbenv global ${RUBY_VERSION}
-
-# perl-Digest-SHA1
 
 WORKDIR /root
 

@@ -42,7 +42,12 @@ else
 fi
 CONAN_FIRST_TIME_BUILD_ALL=false
 
-cmake --preset conan-release -DPYTHON_VERSION=3.12.2 -DPython_ROOT_DIR:PATH=$HOME/.pyenv/versions/3.12.2
+cmake --preset conan-release \
+      -DPYTHON_VERSION=3.12.2 -DPython_ROOT_DIR:PATH=$HOME/.pyenv/versions/3.12.2 \
+      -DCPACK_BINARY_TGZ:BOOL=ON -DCPACK_BINARY_RPM:BOOL=ON \
+      -DCPACK_BINARY_IFW:BOOL=OFF -DCPACK_BINARY_DEB:BOOL=OFF -DCPACK_BINARY_NSIS:BOOL=OFF \
+      -DCPACK_BINARY_STGZ:BOOL=OFF -DCPACK_BINARY_TBZ2:BOOL=OFF -DCPACK_BINARY_TXZ:BOOL=OFF -DCPACK_BINARY_TZ:BOOL=OFF \
+      -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON
 
 # Initially I set that to ON, then I did
 # conan remote add -i 0 openstudio-centos https://conan.openstudio.net/artifactory/api/conan/openstudio-centos
