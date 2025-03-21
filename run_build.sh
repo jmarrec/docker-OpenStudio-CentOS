@@ -24,7 +24,7 @@ fi
 # Otherwise will use this one
 force_rebuild=false
 
-# Delete openstudio-build/centos:$os_version image after having used it?
+# Delete jmarrec/openstudio-cmake-tools:$os_version image after having used it?
 delete_custom_image=false
 
 # verbosity/debug mode.
@@ -44,7 +44,7 @@ centos_version=centos7    # Not planning to try and do a Dockerfile.in yet, so h
 # # Prepare the dockerfile (string substitution in the template file)
 # sed -e "s/\${centos_version}/$centos_version/" Dockerfile.in > Dockerfile
 os_container_name=os-centos
-os_image_name=openstudio-build/centos:$centos_version
+os_image_name=jmarrec/openstudio-cmake-tools:$centos_version
 base_os_image_name=centos:$centos_version
 
 # String representation with colors
@@ -343,9 +343,9 @@ docker run --name $os_container_name --cpus="$n_cores" $platform_flag \
   -d -it $os_image_name /bin/bash > $OUT
 
 # cp the script
-docker cp docker_container_script.sh $os_container_name:.
+docker cp docker_container_script.sh $os_container_name:/root/
 # Chmod execute the script
-docker exec $os_container_name chmod +x docker_container_script.sh
+docker exec $os_container_name chmod +x /root/docker_container_script.sh
 
 # Execute it
 # Launch the regression tests
@@ -356,7 +356,7 @@ echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Nn]$ ]]; then
   echo -e "\nRunning docker_container_script.sh:"
   echo "------------------------------------"
-  docker exec $os_container_name /bin/bash --login ./docker_container_script.sh
+  docker exec $os_container_name /bin/bash --login /root/docker_container_script.sh
 fi
 
 
