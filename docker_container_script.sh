@@ -38,7 +38,7 @@ CONAN_FIRST_TIME_BUILD_ALL=true
 echo "CONAN_FIRST_TIME_BUILD_ALL=$CONAN_FIRST_TIME_BUILD_ALL"
 
 if [[ "$CONAN_FIRST_TIME_BUILD_ALL" == true ]]; then
-  conan install . --output-folder=../OS-build-release --build='*' -c tools.cmake.cmaketoolchain:generator=Ninja -s compiler.cppstd=20 -s build_type=Release
+  CMAKE_POLICY_VERSION_MINIMUM=3.5 conan install . --output-folder=../OS-build-release --build='*' -c tools.cmake.cmaketoolchain:generator=Ninja -s compiler.cppstd=20 -s build_type=Release
 else
   conan install . --output-folder=../OS-build-release --build=missing -c tools.cmake.cmaketoolchain:generator=Ninja -s compiler.cppstd=20 -s build_type=Release
 fi
