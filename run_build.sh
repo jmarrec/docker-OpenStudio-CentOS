@@ -40,12 +40,12 @@ n_cores=`nproc`
 ########################################################################################
 
 # Image/Container names
-centos_version=centos7    # Not planning to try and do a Dockerfile.in yet, so hardcoding
+centos_version=centos9    # Not planning to try and do a Dockerfile.in yet, so hardcoding
 # # Prepare the dockerfile (string substitution in the template file)
 # sed -e "s/\${centos_version}/$centos_version/" Dockerfile.in > Dockerfile
-os_container_name=os-centos
+os_container_name=os-centos9
 os_image_name=jmarrec/openstudio-cmake-tools:$centos_version
-base_os_image_name=centos:$centos_version
+base_os_image_name=almalinux:9
 
 # String representation with colors
 os_container_str="${BBlue}container${Color_Off} ${UBlue}$os_container_name${Color_Off}"
@@ -338,14 +338,14 @@ echo -e "* Launching the $os_container_str"
 echo "Command: docker run --name $os_container_name --cpus="$n_cores" $platform_flag -v `pwd`/dropbox:/root/dropbox -d -it $os_image_name /bin/bash > $OUT"
 docker run --name $os_container_name --cpus="$n_cores" $platform_flag \
   -v `pwd`/dropbox:/root/dropbox \
-  -v /home/julien/Software/Others/OpenStudio:/root/OpenStudio \
-  -v /home/julien/Software/Others/EnergyPlus:/root/EnergyPlus \
+  -v $HOME/Software/Others/OpenStudio:/home/root/OpenStudio \
+  -v $HOME/Software/Others/EnergyPlus:/home/root/EnergyPlus \
   -d -it $os_image_name /bin/bash > $OUT
 
 # cp the script
-docker cp docker_container_script.sh $os_container_name:/root/
+docker cp docker_container_script.sh $os_container_name:/home/root
 # Chmod execute the script
-docker exec $os_container_name chmod +x /root/docker_container_script.sh
+docker exec $os_container_name chmod +x /home/root/docker_container_script.sh
 
 # Execute it
 # Launch the regression tests
@@ -356,7 +356,7 @@ echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Nn]$ ]]; then
   echo -e "\nRunning docker_container_script.sh:"
   echo "------------------------------------"
-  docker exec $os_container_name /bin/bash --login /root/docker_container_script.sh
+  docker exec $os_container_name /bin/bash --login /home/root/docker_container_script.sh
 fi
 
 

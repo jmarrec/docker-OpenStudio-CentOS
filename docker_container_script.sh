@@ -23,9 +23,11 @@ cmake -G Ninja -DCMAKE_BUILD_TYPE:STRING=Release \
   -DENABLE_GTEST_DEBUG_MODE=OFF \
   -DBUILD_PACKAGE:BOOL=ON -DCPACK_BINARY_IFW:BOOL=OFF -DCPACK_BINARY_STGZ:BOOL=OFF -DCPACK_BINARY_TGZ:BOOL=ON \
   -DPython_REQUIRED_VERSION:STRING=3.12.2 \
-  -DPython_ROOT_DIR:PATH=$HOME/.pyenv/versions/3.12.2 \
+  -DPython_ROOT_DIR:PATH=/opt/pyenv/versions/3.12.2 \
+  -DENABLE_OPENMP:BOOL=OFF -DUSE_OpenMP:BOOL=OFF \
   -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=ON \
   ../EnergyPlus
+
 ninja package
 
 cd ..
@@ -53,7 +55,7 @@ cmake --preset conan-release -DPYTHON_VERSION=3.12.2 -DPython_ROOT_DIR:PATH=$HOM
 
 
 echo "Changing shebang line in radiance"
-sed -i "s:#\!/usr/local/bin/wish4.0:#\!/usr/bin/env wish:g" radiance-5.0.a.12-Linux/usr/local/radiance/bin/trad
+# sed -i "s:#\!/usr/local/bin/wish4.0:#\!/usr/bin/env wish:g" radiance-5.0.a.12-Linux/usr/local/radiance/bin/trad
 
 ninja
 
