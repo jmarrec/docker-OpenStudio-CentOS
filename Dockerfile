@@ -51,7 +51,6 @@ ENV LANG=en_US.UTF-8 \
     NINJA_STATUS="[%p][%f/%t] "
 
 # Setup the GitHub CLI
-# Add GitHub CLI repo and install it
 RUN dnf install -y dnf-plugins-core \
  && dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo \
  && dnf install -y gh
@@ -147,8 +146,6 @@ RUN if [ -n "${DOXYGEN_VERSION_UNDERSCORED}" ]; then \
       && mkdir build && cd build && cmake -G Ninja -DCMAKE_BUILD_TYPE=Release .. \
       && ninja && ninja install \
     ; fi
-
-#     && apt-get -y install libxkbcommon-x11-0 xorg-dev libgl1-mesa-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-render-util0-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-shape0 libxcb-cursor0 libdbus-1-3 libwebp-dev \
 
 # Install QtIFW to the default directory, but explicitly
 ARG QTIFW_VERSION=4.8.1
