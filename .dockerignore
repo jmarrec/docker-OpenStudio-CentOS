@@ -1,5 +1,10 @@
 # The other way round: ignore everything
 *
 # Then uncommment what's stricly needed
+!CentOS-Base.repo
+!.bashrc
+!.inputrc
+!git-prompt.sh
+!report_tool_infos.py
 # !model/
 # !docker_container_script.sh
