@@ -13,11 +13,8 @@ source colors.sh
 ########################################################################################
 
 # Image/Container names
-centos_version=centos7    # Not planning to try and do a Dockerfile.in yet, so hardcoding
-# # Prepare the dockerfile (string substitution in the template file)
-# sed -e "s/\${centos_version}/$centos_version/" Dockerfile.in > Dockerfile
 os_container_name=test-os-centos
-base_os_image_name=centos:$centos_version
+base_os_image_name=amazonlinux:2023
 
 # String representation with colors
 os_container_str="${BBlue}container${Color_Off} ${UBlue}$os_container_name${Color_Off}"
@@ -142,7 +139,7 @@ echo "docker run --name $os_container_name -v `pwd`/dropbox:/root/dropbox -it --
 docker run --name $os_container_name -v `pwd`/dropbox:/root/dropbox -it --rm -d $base_os_image_name /bin/bash > $OUT
 
 echo "${Cyan}yum localinstall -y OpenStudio-3.4.0-*.rpm${Color_Off}"
-docker exec $os_container_name /bin/bash -c "cd /root/dropbox && yum localinstall -y OpenStudio-3.4.0-*.rpm"
+docker exec $os_container_name /bin/bash -c "cd /root/dropbox && yum localinstall -y OpenStudio-3.10.0-*.rpm"
 
 echo -e "${BGreen}Install worked${Color_Off}"
 echo ""

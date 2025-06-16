@@ -18,12 +18,12 @@ RUN dnf clean all && dnf -y update \
  && dnf install -y epel-release dnf-plugins-core \
  && dnf config-manager --set-enabled crb \
  && dnf group install -y "Development Tools" \
- && dnf install -y lsb_release glibc-static gcc-gfortran libgfortran-static \
+ && dnf install -y lsb_release glibc-static gcc-gfortran libgfortran-static libstdc++-static \
     zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel tk-devel libffi-devel xz-devel openssl-devel \
     autoconf gcc patch bzip2 openssl-devel libffi-devel readline zlib-devel gdbm ncurses-devel tar libyaml-devel \
     perl-Data-Dumper perl-Thread-Queue perl-Digest-SHA1 perl-Digest-SHA perl-IPC-Cmd perl-FindBin perl-Pod-Html \
     lcov aria2 wget ninja-build gnupg2 ca-certificates pkgconf \
-    jq p7zip p7zip-plugins tree bash-completion ripgrep tmate \
+    jq p7zip p7zip-plugins tree bash-completion ripgrep tmate vim \
     groff less \
     libglvnd-devel mesa-libGL-devel.x86_64 mesa-libGLU-devel.x86_64 mesa-libGLw.x86_64 mesa-libGLw-devel.x86_64 libXi-devel.x86_64 freeglut-devel.x86_64 freeglut.x86_64                 libXrandr libXrandr-devel libXinerama-devel libXcursor-devel \
  && ARCH=$(uname -m) && \
